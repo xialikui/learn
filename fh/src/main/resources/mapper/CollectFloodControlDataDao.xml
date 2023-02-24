@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fh.modules.flood.dao.CollectFloodControlDataDao">
+
+    <resultMap type="com.example.fh.modules.flood.entity.CollectFloodControlData" id="CollectFloodControlDataMap">
+        <result property="id" column="ID" jdbcType="VARCHAR"/>
+        <result property="pointMn" column="POINT_MN" jdbcType="VARCHAR"/>
+        <result property="monitorCode" column="MONITOR_CODE" jdbcType="VARCHAR"/>
+        <result property="monitorTime" column="MONITOR_TIME" jdbcType="TIMESTAMP"/>
+        <result property="monitorData" column="MONITOR_DATA" jdbcType="NUMERIC"/>
+        <result property="flag" column="FLAG" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="sendTime" column="SEND_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CollectFloodControlDataMap">
+        select
+          ID, POINT_MN, MONITOR_CODE, MONITOR_TIME, MONITOR_DATA, FLAG, CREATE_TIME, SEND_TIME
+        from collect_flood_control_data
+        where ID = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CollectFloodControlDataMap">
+        select
+        ID, POINT_MN, MONITOR_CODE, MONITOR_TIME, MONITOR_DATA, FLAG, CREATE_TIME, SEND_TIME
+        from collect_flood_control_data
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="pointMn != null and pointMn != ''">
+                and POINT_MN = #{pointMn}
+            </if>
+            <if test="monitorCode != null and monitorCode != ''">
+                and MONITOR_CODE = #{monitorCode}
+            </if>
+            <if test="monitorTime != null">
+                and MONITOR_TIME = #{monitorTime}
+            </if>
+            <if test="monitorData != null">
+                and MONITOR_DATA = #{monitorData}
+            </if>
+            <if test="flag != null and flag != ''">
+                and FLAG = #{flag}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="sendTime != null">
+                and SEND_TIME = #{sendTime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <select id="getPageList" resultMap="CollectFloodControlDataMap">
+        select
+        a.ID
+        a.POINT_MN
+        a.MONITOR_CODE
+        a.MONITOR_TIME
+        a.MONITOR_DATA
+        a.FLAG
+        a.CREATE_TIME
+        a.SEND_TIME
+        from collect_flood_control_data a
+        <where>
+            <if test="params.id != null and params.id != ''">
+                and a.ID = #{params.id}
+            </if>
+            <if test="params.pointMn != null and params.pointMn != ''">
+                and a.POINT_MN = #{params.pointMn}
+            </if>
+            <if test="params.monitorCode != null and params.monitorCode != ''">
+                and a.MONITOR_CODE = #{params.monitorCode}
+            </if>
+            <if test="params.monitorTime != null">
+                and a.MONITOR_TIME = #{params.monitorTime}
+            </if>
+            <if test="params.monitorData != null">
+                and a.MONITOR_DATA = #{params.monitorData}
+            </if>
+            <if test="params.flag != null and params.flag != ''">
+                and a.FLAG = #{params.flag}
+            </if>
+            <if test="params.createTime != null">
+                and a.CREATE_TIME = #{params.createTime}
+            </if>
+            <if test="params.sendTime != null">
+                and a.SEND_TIME = #{params.sendTime}
+            </if>
+        </where>
+
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from collect_flood_control_data
+        <where>
+            <if test="id != null and id != ''">
+                and ID = #{id}
+            </if>
+            <if test="pointMn != null and pointMn != ''">
+                and POINT_MN = #{pointMn}
+            </if>
+            <if test="monitorCode != null and monitorCode != ''">
+                and MONITOR_CODE = #{monitorCode}
+            </if>
+            <if test="monitorTime != null">
+                and MONITOR_TIME = #{monitorTime}
+            </if>
+            <if test="monitorData != null">
+                and MONITOR_DATA = #{monitorData}
+            </if>
+            <if test="flag != null and flag != ''">
+                and FLAG = #{flag}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="sendTime != null">
+                and SEND_TIME = #{sendTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into collect_flood_control_data(POINT_MN, MONITOR_CODE, MONITOR_TIME, MONITOR_DATA, FLAG, CREATE_TIME, SEND_TIME)
+        values (#{pointMn}, #{monitorCode}, #{monitorTime}, #{monitorData}, #{flag}, #{createTime}, #{sendTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into collect_flood_control_data(id,POINT_MN, MONITOR_CODE, MONITOR_TIME, MONITOR_DATA, FLAG, CREATE_TIME,
+        SEND_TIME)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id},#{entity.pointMn}, #{entity.monitorCode}, #{entity.monitorTime}, #{entity.monitorData}, #{entity.flag},
+            #{entity.createTime}, #{entity.sendTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into collect_flood_control_data(POINT_MN, MONITOR_CODE, MONITOR_TIME, MONITOR_DATA, FLAG, CREATE_TIME,
+        SEND_TIME)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.pointMn}, #{entity.monitorCode}, #{entity.monitorTime}, #{entity.monitorData}, #{entity.flag},
+            #{entity.createTime}, #{entity.sendTime})
+        </foreach>
+        on duplicate key update
+        POINT_MN = values(POINT_MN),
+        MONITOR_CODE = values(MONITOR_CODE),
+        MONITOR_TIME = values(MONITOR_TIME),
+        MONITOR_DATA = values(MONITOR_DATA),
+        FLAG = values(FLAG),
+        CREATE_TIME = values(CREATE_TIME),
+        SEND_TIME = values(SEND_TIME)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update collect_flood_control_data
+        <set>
+            <if test="pointMn != null and pointMn != ''">
+                POINT_MN = #{pointMn},
+            </if>
+            <if test="monitorCode != null and monitorCode != ''">
+                MONITOR_CODE = #{monitorCode},
+            </if>
+            <if test="monitorTime != null">
+                MONITOR_TIME = #{monitorTime},
+            </if>
+            <if test="monitorData != null">
+                MONITOR_DATA = #{monitorData},
+            </if>
+            <if test="flag != null and flag != ''">
+                FLAG = #{flag},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="sendTime != null">
+                SEND_TIME = #{sendTime},
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from collect_flood_control_data where ID = #{id}
+    </delete>
+
+</mapper>
+
