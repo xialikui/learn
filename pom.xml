@@ -18,6 +18,7 @@
     <modules>
         <module>design</module>
         <module>fh</module>
+        <module>jrzh</module>
     </modules>
     <properties>
         <java.version>8</java.version>
