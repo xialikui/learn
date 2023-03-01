@@ -1,0 +1,94 @@
+#spring:
+#  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    druid:
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      url: jdbc:mysql://211.143.216.150:8003/fuding?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#      username: root
+#      password: craftsman_fd2022
+#      initial-size: 5
+#      max-active: 10
+#      min-idle: 5
+#      max-wait: 60000
+#      pool-prepared-statements: true
+#      max-pool-prepared-statement-per-connection-size: 20
+#      time-between-eviction-runs-millis: 60000
+#      min-evictable-idle-time-millis: 300000
+#      #      #Oracle需要打开注释
+#      #      validation-query: SELECT 1 FROM DUAL
+#      test-while-idle: true
+#      test-on-borrow: false
+#      test-on-return: false
+#      stat-view-servlet:
+#        enabled: true
+#        url-pattern: /druid/*
+#        #login-username: admin
+#        #login-password: admin
+#      filter:
+#        stat:
+#          log-slow-sql: true
+#          slow-sql-millis: 1000
+#          merge-sql: false
+#        wall:
+#          config:
+#            multi-statement-allow: true
+
+#spring:
+#  names: m1
+#  main:
+#    allow-bean-definition-overriding: true
+#  shardingsphere:
+#    datasource:
+#      m1:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        jdbcUrl: jdbc:mysql://116.62.230.132:3306/cangzhou?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#        password: craftsman_116
+#        type: com.zaxxer.hikari.HikariDataSource
+#        username: root
+#      names: m1
+#    props:
+#      sql:
+#        show: true
+#    sharding:
+#      tables:
+#        user:
+#          actual-data-nodes: m1.user_$->{0..2}
+#          key-generator:
+#            column: id
+#            type: SNOWFLAKE
+#          table-strategy:
+#            inline:
+#              algorithm-expression: user_$->{id % 3}
+#              sharding-column: id
+
+
+
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    datasource:
+      names: m1
+      m1:
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: craftsman_116
+        type: com.alibaba.druid.pool.DruidDataSource
+        jdbcUrl: jdbc:mysql://116.62.230.132:3306/cangzhou?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    props:
+      sql:
+        show: true
+    sharding:
+      tables:
+        t_order:
+          actual-data-nodes: m1.t_order_$->{1..2}
+          key-generator:
+            column: order_id
+            type: SNOWFLAKE
+          table-strategy:
+            inline:
+              algorithm-expression: t_order_$->{order_id % 2 + 1}
+              sharding-column: order_id
+
+

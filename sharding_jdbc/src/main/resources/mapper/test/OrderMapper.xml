@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.sharding_jdbc.modules.test.mapper.OrderMapper">
+    <insert id="insertOrder" parameterType="com.example.sharding_jdbc.modules.test.entity.Order">
+    insert into t_order(order_id, price, user_id, status)
+    values (#{orderId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{userId,jdbcType=INTEGER},
+    #{status,jdbcType=VARCHAR})
+</insert>
+
+
+    <select id="findOrderByIds" parameterType="java.util.List"
+            resultType="com.example.sharding_jdbc.modules.test.entity.Order">
+        select
+        *
+        from t_order AS t
+        where t.order_id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>
