@@ -19,6 +19,8 @@
         <module>design</module>
         <module>fh</module>
         <module>jrzh</module>
+        <module>sharding_jdbc</module>
+        <module>quartz</module>
     </modules>
     <properties>
         <java.version>8</java.version>
